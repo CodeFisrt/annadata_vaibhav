@@ -1,0 +1,87 @@
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <div class="row">
+            <div class="col-md-7 col-7 col-sm-7">
+              <h5>District</h5>
+            </div>
+            <div class="col-md-5 col-5 col-sm-5">
+              <button pButton pRipple class="p-button-success p-button-sm float-end"
+                (click)="onAddDistrict()">Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="col-md-12">
+            <p-table [value]="filteredDistrictArr" [paginator]="true" [rows]="10"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50,75,100,150]"
+              styleClass="p-datatable-gridlines p-datatable-sm" [responsive]="true"
+              [globalFilterFields]="['stateName','districtName']">
+              <ng-template pTemplate="header">
+                <tr class="button-cell">
+                  <th style="width: 10%;">Sr</th>
+                  <th style="width: 30%;" pSortableColumn="stateName">State<p-sortIcon field="stateName"></p-sortIcon>
+                  </th>
+                  <th style="width: 30%;" pSortableColumn="districtName">District<p-sortIcon
+                      field="districtName"></p-sortIcon></th>
+                  <th style="width: 30%;">Action</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-item let-sr="rowIndex">
+                <tr class="button-cell">
+                  <td>{{sr+1}}</td>
+                  <td>
+                    <span *ngIf="item.isEdit">
+                      <p-dropdown id="float-input" name="foodCategoryName" [options]="stateArr"
+                        [(ngModel)]="item.stateId" optionLabel="stateName" optionValue="stateId" [filter]="true"
+                        filterBy="stateName" [showClear]="item.stateId !== 0" placeholder="Select State"
+                        [editable]="true" [style]="{'width':'100%'}" [appendTo]="'body'">
+                      </p-dropdown>
+                    </span>
+                    <span *ngIf="!item.isEdit">
+                      {{item.stateName}}
+                    </span>
+                  </td>
+                  <td>
+                    <span *ngIf="item.isEdit">
+                      <input type="text" id="float-input" class="form-control" [(ngModel)]="item.districtName"
+                        pInputText placeholder="Enter District">
+                    </span>
+                    <span *ngIf="!item.isEdit">
+                      {{item.districtName}}
+                    </span>
+                  </td>
+                  <td>
+                    <span *ngIf="!item.isEdit">
+                      <button pButton pRipple class="p-button-primary p-button-sm" (click)="onEdit(item)">Edit</button>
+                    </span>
+                    <span *ngIf="item.isEdit">
+                      <button pButton pRipple class="p-button-success p-button-sm me-2" *ngIf="item.districtId == 0"
+                        (click)="onSaveDistrict()" [disabled]="!isFormValid(item)">Save
+                        <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm ms-1"></span>
+                      </button>
+                      <button pButton pRipple class="p-button-warning p-button-sm me-2" *ngIf="item.districtId !== 0"
+                        (click)="onUpdateDistrict()">Update
+                        <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm ms-1"></span>
+                      </button>
+                      <button pButton pRipple class="p-button-danger p-button-sm"
+                        (click)="onCancel(item)">Cancel</button>
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="4" class="text-center">No Record Found</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

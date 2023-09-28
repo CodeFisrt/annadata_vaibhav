@@ -1,0 +1,84 @@
+<div class="parent">
+  <div class="wrapper" style="background-image: url('/assets/images/farm-back.png');">
+    <div class="inner">
+      <form #loginForm="ngForm">
+        <h3>AnnaData <i class="fa fa-pagelines" aria-hidden="true"></i></h3>
+        <div class="form-wrapper">
+          <label>Username</label>
+          <input type="text" class="form-control" [(ngModel)]="loginObj.userName" #username="ngModel" name="userName"
+            required placeholder="Enter Username"
+            [ngClass]="{ 'error-border': username.invalid && (username.touched || username.dirty) }">
+          <div class="text-white" *ngIf="username.touched || username.dirty">
+            <span class="fw-bold" *ngIf="username.errors?.['required']"><i
+                class="fa fa-exclamation-triangle"></i>&nbsp;UserName is required</span>
+          </div>
+        </div>
+        <div class="form-wrapper position-relative">
+          <label>Password</label>
+          <div class="password-input-container">
+            <input [type]="showPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="loginObj.password"
+              name="password" #password="ngModel" placeholder="Enter Password" required
+              [ngClass]="{ 'error-border': password.invalid && (password.touched || password.dirty) }" />
+            <i class="fa fa-eye password-eye" (click)="onEyeClick()" *ngIf="showPassword == true"></i>
+            <i class="fa fa-eye-slash password-eye" (click)="onEyeClick()" *ngIf="showPassword == false"></i>
+          </div>
+          <div class="text-white" *ngIf="password.touched || password.dirty">
+            <span class="fw-bold" *ngIf="password.errors?.['required']">
+              <i class="fa fa-exclamation-triangle"></i>&nbsp;Password is required
+            </span>
+          </div>
+        </div>
+        <div class="row pt-2">
+          <div class="col-md-12 col-12">
+            <div class="field field-checkbox">
+              <p-checkbox class="rememberMeTxt" [(ngModel)]="rememberMe" name="rememberMe" label="Remember me" inputId="rememberMeCheckbox" [binary]="true"></p-checkbox>
+            </div>
+          </div>
+        </div>
+        <button (click)="onLogin(loginForm)">
+          <ng-container *ngIf="!isApiCallInProgress; else loggingIn">
+            Log In <i class="pi pi-arrow-right ps-2"></i>
+          </ng-container>
+          <ng-template #loggingIn>
+            Logging In <span class="spinner-border spinner-border-sm ms-2"></span>
+          </ng-template>
+        </button>
+      </form>
+    </div>
+
+    <!-- <div class="inner">
+      <form>
+        <h3>Registration Form</h3>
+        <div class="form-group">
+          <div class="form-wrapper">
+            <label for="">First Name</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="form-wrapper">
+            <label for="">Last Name</label>
+            <input type="text" class="form-control">
+          </div>
+        </div>
+        <div class="form-wrapper">
+          <label for="">Email</label>
+          <input type="text" class="form-control">
+        </div>
+        <div class="form-wrapper">
+          <label for="">Password</label>
+          <input type="password" class="form-control">
+        </div>
+        <div class="form-wrapper">
+          <label for="">Confirm Password</label>
+          <input type="password" class="form-control">
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> I accept the Terms of Use & Privacy Policy.
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <button>Register Now</button>
+      </form>
+    </div> -->
+  </div>
+</div>

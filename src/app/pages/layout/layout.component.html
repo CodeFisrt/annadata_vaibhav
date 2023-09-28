@@ -1,0 +1,105 @@
+<div class="container-fluid px-0">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-black py-0 px-0">
+    <!-- <a class="navbar-brand"><img id="logo" src="https://i.imgur.com/K7Nwq4V.jpg"> &nbsp;&nbsp;Annadata</a> -->
+    <a class="navbar-brand"><i class="fa fa-pagelines" id="logo2" aria-hidden="true"></i> Annadata</a>
+    <span class="v-line"></span>
+    <button class="navbar-toggler mr-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" routerLink="dashboard"
+            routerLinkActive="activeLink">Dashboard</a>
+        </li>
+        <li class="nav-item dropdown" *ngIf="loggedUserData.role == 'admin'">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Masters</a>
+          <ul class="dropdown-menu" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+            <li><a class="dropdown-item" routerLink="food-category" routerLinkActive="activeLink">Food Category</a></li>
+            <li><a class="dropdown-item" routerLink="food-item" routerLinkActive="activeLink">Food Item</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" routerLink="states" routerLinkActive="activeLink">State</a></li>
+            <li><a class="dropdown-item" routerLink="district" routerLinkActive="activeLink">District</a></li>
+            <li><a class="dropdown-item" routerLink="taluka" routerLinkActive="activeLink">Taluka</a></li>
+            <li><a class="dropdown-item" routerLink="city" routerLinkActive="activeLink">City</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown" *ngIf="loggedUserData.role == 'admin' || loggedUserData.role == 'Farmer'">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Farmer</a>
+          <ul class="dropdown-menu" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+            <li><a class="dropdown-item" routerLink="filter-farmer" routerLinkActive="activeLink" *ngIf="loggedUserData.role == 'admin'">Filter Farmers</a>
+            </li>
+            <li><a class="dropdown-item" routerLink="add-new-farmer" routerLinkActive="activeLink" *ngIf="loggedUserData.role == 'admin' || loggedUserData.role == 'Farmer'" >{{ loggedUserData.role === 'admin' ? 'Add Farmer' : '' || loggedUserData.role === 'Farmer' ? 'Profile' : '' }}</a></li>
+            <li><a class="dropdown-item" routerLink="verify-farmer" routerLinkActive="activeLink" *ngIf="loggedUserData.role == 'admin'">Verify Farmers</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item" *ngIf="loggedUserData.role == 'admin'">
+          <a class="nav-link" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" routerLink="executive"
+            routerLinkActive="activeLink">Executive</a>
+        </li>
+        <li class="nav-item" *ngIf="loggedUserData.role == 'admin'">
+          <a class="nav-link" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" routerLink="add-customer"
+            routerLinkActive="activeLink">Customer</a>
+        </li>
+        <li class="nav-item dropdown" *ngIf="loggedUserData.role == 'admin' || loggedUserData.role == 'Vendor'">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Vendor</a>
+          <ul class="dropdown-menu" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+            <li><a class="dropdown-item" routerLink="all-vendors" routerLinkActive="activeLink" *ngIf="loggedUserData.role == 'admin'">All Vendor</a></li>
+            <li><a class="dropdown-item" routerLink="add-vendors" routerLinkActive="activeLink" *ngIf="loggedUserData.role == 'admin' || loggedUserData.role == 'Vendor' ">{{ loggedUserData.role === 'admin' ? 'Add Vendor' : '' || loggedUserData.role === 'Vendor' ? 'Profile' : '' }}</a></li>
+            <li><a class="dropdown-item" routerLink="verify-vendor" routerLinkActive="activeLink" *ngIf="loggedUserData.role == 'admin'">Verify Vendor</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">RFQ</a>
+          <ul class="dropdown-menu" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+            <li><a class="dropdown-item" routerLink="create-RFQ" routerLinkActive="activeLink" *ngIf="loggedUserData.role == 'admin' || loggedUserData.role == 'Farmer'">Create RFQ</a></li>
+            <li><a class="dropdown-item" routerLink="RFQ-list" routerLinkActive="activeLink" *ngIf="loggedUserData.role == 'admin' || loggedUserData.role == 'Farmer' || loggedUserData.role == 'Vendor'">RFQ List</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <button pButton pRipple type="button" [icon]="icon" id="custom-small-button" *ngIf="showFilterIcon"
+            [ngClass]="class" (click)="toggleBlocks()"></button>
+        </li>
+        <!-- <li class="nav-item d-flex text-white">
+          <a class="nav-link hand pe-0" [class.active]="switchLang == 'en'" (click)="selectedLanguage('en')"> EN &nbsp;
+            |</a><a class="nav-link hand" [class.active]="switchLang == 'mr'" (click)="selectedLanguage('mr')">MR</a>
+        </li>
+        <li class="nav-item text-white">
+          {{'layout.executive' | translate}}
+        </li> -->
+      </ul>
+      <div class="ml-auto">
+        <form class="d-flex">
+          <span class="p-input-icon-left ml-auto float-end">
+            <i class="pi pi-search"></i>
+            <input pInputText type="search" class="form-control" name="searchTxt" [(ngModel)]="searchTxt"
+              (ngModelChange)="onSearch($event)" placeholder="Search keyword">
+          </span>
+          <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+        </form>
+      </div>
+      <li class="nav-item" style="list-style: none; white-space: nowrap;">
+      <span class="text-white"><i class="pi pi-user me-1"></i>{{loggedUserData.userName | uppercase}}</span>
+      </li>
+      <li class="nav-item">
+        <button class="btn btn-sm btn-danger logOutBtn" (click)="onLogOut()"> <i class="fa fa-sign-out"
+            aria-hidden="true"></i></button>
+      </li>
+    </div>
+  </nav>
+</div>
+
+<div *ngIf="isOnline; else noInternet">
+  <!-- Your main content here -->
+  <router-outlet></router-outlet>
+</div>
+
+<ng-template #noInternet>
+  <div class="offline-container">
+    <img [src]="noInternetImageSrc" alt="No Internet Connection">
+  </div>
+</ng-template>

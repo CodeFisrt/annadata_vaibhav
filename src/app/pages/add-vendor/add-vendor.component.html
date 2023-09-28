@@ -1,0 +1,206 @@
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <div class="row">
+            <div class="col-md-12 col-12 col-sm-12">
+              <h5><i class="pi pi-building mt-1" aria-hidden="true"></i>&nbsp;{{ loggedUserData.role === 'admin' ? 'Add Vendor' : '' || loggedUserData.role === 'Vendor' ? 'Vendor Profile' : '' }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body" style="background: rgb(244, 241, 241);">
+                  <div class="row">
+                    <div class="col-md-9">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-3">
+                              <label class="fw-bold mb-1">Vendor Name</label>
+                              <input type="text" id="float-input" class="form-control" name="vendorName"
+                                [(ngModel)]="vendorObj.vendorName" pInputText placeholder="Enter Vendor Name">
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold mb-1">Contact</label>
+                              <input type="text" id="float-input" class="form-control" name="contactNo"
+                                [(ngModel)]="vendorObj.contactNo" pInputText placeholder="Enter Contact">
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold mb-1">Alternate Contact</label>
+                              <input type="text" id="float-input" class="form-control" name="altContactNo"
+                                [(ngModel)]="vendorObj.altContactNo" pInputText placeholder="Enter Alternate Contact">
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold mb-1">Email</label>
+                              <input type="text" id="float-input" class="form-control" name="emailId"
+                                [(ngModel)]="vendorObj.emailId" pInputText placeholder="Enter Email">
+                            </div>
+                          </div>
+                          <div class="row mt-3">
+                            <div class="col-md-3">
+                              <label class="fw-bold mb-1">GST Number</label>
+                              <input type="text" id="float-input" class="form-control" name="gstNo"
+                                [(ngModel)]="vendorObj.gstNo" pInputText placeholder="Enter GST Number">
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold mb-1">Personal PAN Number</label>
+                              <input type="text" id="float-input" class="form-control" name="personalPanNo"
+                                [(ngModel)]="vendorObj.personalPanNo" pInputText
+                                placeholder="Enter Personal PAN Number">
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold mb-1">Business PAN Number</label>
+                              <input type="text" id="float-input" class="form-control" name="businessPanNo"
+                                [(ngModel)]="vendorObj.businessPanNo" pInputText
+                                placeholder="Enter Business PAN Number">
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold mb-1">Verified By</label>
+                              <input type="text" id="float-input" class="form-control" name="verifiedBy"
+                                [(ngModel)]="vendorObj.verifiedBy" pInputText placeholder="Enter verifiedBy">
+                            </div>
+                          </div>
+                          <div class="row mt-2">
+                            <div class="col-md-3">
+                              <label class="fw-bold my-1">State</label>
+                              <p-dropdown [options]="stateArr" [(ngModel)]="selectedStateId" optionLabel="stateName"
+                                optionValue="stateId" [filter]="true" filterBy="stateName" [showClear]="true"
+                                placeholder="Select State" (onChange)="getDistrictByStateId()" [editable]="true"
+                                [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold my-1">District</label>
+                              <p-dropdown [options]="districtArr" [(ngModel)]="selectedDistrictId"
+                                optionLabel="districtName" optionValue="districtId" [filter]="true"
+                                filterBy="districtName" [showClear]="true" placeholder="Select District"
+                                (onChange)="getAllCitiesByDistrictId()" [editable]="true" [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold my-1">City</label>
+                              <p-dropdown [options]="cityArr" [(ngModel)]="selectedCityId" optionLabel="cityName"
+                                optionValue="cityId" [filter]="true" filterBy="cityName" [showClear]="true"
+                                placeholder="Select City" (onChange)="getAllTalukaByCityId()" [editable]="true"
+                                [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold my-1">Shop Taluka</label>
+                              <p-dropdown [options]="talukaArr" [(ngModel)]="vendorObj.shopTalukaId"
+                                optionLabel="talukaName" optionValue="talukaId" [filter]="true" filterBy="talukaName"
+                                [showClear]="vendorObj.shopTalukaId !== 0" placeholder="Select Taluka" [editable]="true"
+                                [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                          </div>
+                          <div class="row mt-2">
+                            <div class="col-md-3">
+                              <label class="fw-bold my-1">State</label>
+                              <p-dropdown [options]="stateHomeArr" [(ngModel)]="selectedHomeStateId"
+                                optionLabel="stateName" optionValue="stateId" [filter]="true" filterBy="stateName"
+                                [showClear]="true" placeholder="Select State" (onChange)="getHomeDistrictByStateId()"
+                                [editable]="true" [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold my-1">District</label>
+                              <p-dropdown [options]="districtHomeArr" [(ngModel)]="selectedHomeDistrictId"
+                                optionLabel="districtName" optionValue="districtId" [filter]="true"
+                                filterBy="districtName" [showClear]="true" placeholder="Select District"
+                                (onChange)="getAllHomeCitiesByDistrictId()" [editable]="true"
+                                [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold my-1">City</label>
+                              <p-dropdown [options]="cityHomeArr" [(ngModel)]="selectedHomeCityId"
+                                optionLabel="cityName" optionValue="cityId" [filter]="true" filterBy="cityName"
+                                [showClear]="true" placeholder="Select City" (onChange)="getAllHomeTalukaByCityId()"
+                                [editable]="true" [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-3">
+                              <label class="fw-bold my-1">Home Taluka</label>
+                              <p-dropdown [options]="talukaHomeArr" [(ngModel)]="vendorObj.homeTalukaId"
+                                optionLabel="talukaName" optionValue="talukaId" [filter]="true" filterBy="talukaName"
+                                [showClear]="vendorObj.homeTalukaId !== 0" placeholder="Select Taluka" [editable]="true"
+                                [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                          </div>
+                          <div class="row mt-4">
+                            <div class="col-md-12 text-center">
+                              <button pButton pRipple class="p-button-success p-button-sm me-2" label="Save"
+                                (click)="addNewVendor()" *ngIf="vendorObj.vendorId == 0">
+                                <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+                              </button>
+                              <button pButton pRipple class="p-button-warning p-button-sm me-2" label="Update"
+                                (click)="onUpdateVendor()" *ngIf="vendorObj.vendorId !== 0">
+                              </button>
+                              <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-sm"
+                                label="Cancel" (click)="onCancel()"  [ngClass]="loggedUserData.role == 'Vendor'?'d-none':''"></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="card">
+                        <div class="card-body" id="listCardBody">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <label class="fw-bold mb-1">Shop Address</label>
+                              <textarea class="form-control" pInputTextarea [autoResize]="true"
+                                [(ngModel)]="vendorObj.shopAddess" name="shopAddress"
+                                placeholder="Enter Shop Address"></textarea>
+                            </div>
+                          </div>
+                          <div class="row mt-1">
+                            <div class="col-md-12">
+                              <label class="fw-bold mb-1">Home Address</label>
+                              <textarea class="form-control" pInputTextarea [autoResize]="true"
+                                [(ngModel)]="vendorObj.homeAddress" name="homeAddress"
+                                placeholder="Enter Home Address"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card mt-3">
+                        <div class="card-body" id="listCardBody">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <ul class="list-group">
+                                <li class="list-group-item bg-body-tertiary">
+                                  <p-checkbox [(ngModel)]="vendorObj.isShopAvailable" label="Shop Available"
+                                    [binary]="true" inputId="binary"></p-checkbox>
+                                </li>
+                                <li class="list-group-item bg-body-tertiary">
+                                  <p-checkbox [(ngModel)]="vendorObj.isOwnTransporation" label="Own Transportation"
+                                    [binary]="true" inputId="binary"></p-checkbox>
+                                </li>
+                                <li class="list-group-item bg-body-tertiary">
+                                  <p-checkbox [(ngModel)]="vendorObj.isVerified" label="Verified" [binary]="true"
+                                    inputId="binary"></p-checkbox>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

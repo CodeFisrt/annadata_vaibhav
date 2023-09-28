@@ -1,0 +1,35 @@
+.imgClass {
+  width: 14%;
+  height: auto;
+  margin: 28px 0 0 0;
+}
+
+.imgClassTable {
+  width: 12%;
+  height: 28px;
+  margin: 0px 0px 0px 0px;
+}
+
+.popup-image {
+  width: 100%;
+  max-height: 50vh;
+}
+
+
+@media(max-width: 575.98px) {
+  .imgClassTable {
+    width: 40% !important;
+    height: auto;
+    margin: 0px 0px 0px 0px;
+  }
+}
+
+@media(max-width: 767.98px) {
+  .imgClassTable {
+    width: 40% !important;
+    height: auto;
+    margin: 0px 0px 0px 0px;
+  }
+}
+
+

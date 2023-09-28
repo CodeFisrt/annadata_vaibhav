@@ -1,0 +1,14 @@
+.btn-Add{
+  padding: 30px 0 0 0;
+}
+
+#listCardBody{
+  padding: 8px 8px 8px 8px !important;
+}
+
+@media(max-width: 575.98px){
+  .btn-Add{
+    text-align: center;
+    padding: 15px 0 10px 0;
+  }
+}

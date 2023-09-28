@@ -1,0 +1,203 @@
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <div class="row">
+            <div class="col-md-12 col-12 col-sm-12">
+              <h5><i class="pi pi-plus mt-1" aria-hidden="true"></i>&nbsp;{{ loggedUserData.role === 'admin' ? 'Add Farmer' : '' || loggedUserData.role === 'Farmer' ? 'Farmer Profile' : '' }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body" style="background: rgb(244, 241, 241);">
+                  <div class="row">
+                    <div class="col-md-9">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label class="fw-bold mb-1">Full Name</label>
+                          <input type="text" id="float-input" class="form-control" name="fullName"
+                            [(ngModel)]="farmerObj.fullName" pInputText placeholder="Enter Full Name">
+                        </div>
+                        <div class="col-md-3">
+                          <label class="fw-bold mb-1">Contact Number</label>
+                          <input type="text" id="float-input" class="form-control" name="contactNo"
+                            [(ngModel)]="farmerObj.contactNo" pInputText placeholder="Enter Contact Number">
+                        </div>
+                        <div class="col-md-3">
+                          <label class="fw-bold mb-1">Alternate Contact Number</label>
+                          <input type="text" id="float-input" class="form-control" name="altContactNo"
+                            [(ngModel)]="farmerObj.altContactNo" pInputText
+                            placeholder="Enter Alternate Contact Number">
+                        </div>
+                        <div class="col-md-3">
+                          <label class="fw-bold mb-1">Aadhar Number</label>
+                          <input type="text" id="float-input" class="form-control" name="aadharCardNo"
+                            [(ngModel)]="farmerObj.aadharCardNo" pInputText placeholder="Enter Aadhar Number">
+                        </div>
+                      </div>
+
+                      <div class="row mt-2">
+                        <div class="col-md-3">
+                          <label class="fw-bold mb-1">State</label>
+                          <p-dropdown [options]="stateArr" [(ngModel)]="selectedStateId" optionLabel="stateName"
+                            optionValue="stateId" [filter]="true" filterBy="stateName" [showClear]="true"
+                            placeholder="Select State" (onChange)="getDistrictByStateId()" [editable]="true"  [style]="{'width':'100%'}">
+                          </p-dropdown>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="fw-bold my-1">District</label>
+                          <p-dropdown [options]="districtArr" [(ngModel)]="selectedDistrictId"
+                            optionLabel="districtName" optionValue="districtId" [filter]="true" filterBy="districtName"
+                            [showClear]="true" placeholder="Select District" (onChange)="getAllCitiesByDistrictId()"
+                            [editable]="true"  [style]="{'width':'100%'}">
+                          </p-dropdown>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="fw-bold my-1">City</label>
+                          <p-dropdown [options]="cityArr" [(ngModel)]="selectedCityId" optionLabel="cityName"
+                            optionValue="cityId" [filter]="true" filterBy="cityName" [showClear]="true"
+                            placeholder="Select City" (onChange)="getAllTalukaByCityId()" [editable]="true"  [style]="{'width':'100%'}">
+                          </p-dropdown>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="fw-bold my-1">Taluka</label>
+                          <p-dropdown [options]="talukaArr" [(ngModel)]="farmerObj.talukaId" optionLabel="talukaName"
+                            optionValue="talukaId" [filter]="true" filterBy="talukaName"
+                            [showClear]="farmerObj.talukaId !== 0" placeholder="Select Taluka" [editable]="true"  [style]="{'width':'100%'}">
+                          </p-dropdown>
+                        </div>
+                      </div>
+
+                      <div class="row mt-2">
+                        <div class="col-md-6">
+                          <label class="fw-bold mb-1">Home Address</label>
+                          <textarea class="form-control" pInputTextarea [autoResize]="true"
+                            [(ngModel)]="farmerObj.homeAddress" name="homeAddress"
+                            placeholder="Enter Home Address"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="fw-bold mb-1">Farm Address</label>
+                          <textarea class="form-control" pInputTextarea [autoResize]="true"
+                            [(ngModel)]="farmerObj.farmAddress" name="farmAddress"
+                            placeholder="Enter Farm Address"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="row mt-2">
+                        <div class="col-md-3">
+                          <label class="fw-bold mb-1">Select Image</label>
+                          <input type="file" class="form-control" name="photoUrl" [(ngModel)]="farmerObj.photoUrl"
+                            [value]="farmerObj.photoUrl" (change)="uploadImage($event)" multiple>
+                        </div>
+                        <div class="col-md-2">
+                          <label class="fw-bold mb-1">Total Acres</label>
+                          <input type="text" id="float-input" class="form-control" name="farmTotalAcre"
+                            [(ngModel)]="farmerObj.farmTotalAcre" pInputText placeholder="Enter Total Acres">
+                        </div>
+                        <div class="col-md-3">
+                          <label class="fw-bold mb-1">Food Category</label>
+                          <p-dropdown [options]="foodCategoryArr" [(ngModel)]="selectedFoodCategory"
+                            optionLabel="foodCategoryName" optionValue="foodCategoryId" [filter]="true"
+                            filterBy="foodCategoryName" [showClear]="true" placeholder="Select Category"
+                            (onChange)="getAllFoodItemsByCategoryId()" [editable]="true"  [style]="{'width':'100%'}">
+                          </p-dropdown>
+                        </div>
+                        <div class="col-md-2">
+                          <label class="fw-bold mb-1">Food Item</label>
+                          <p-dropdown [options]="foodItemArr" [(ngModel)]="farmerFoodItemsObj.foodItemId"
+                            optionLabel="foodItemName" optionValue="foodItemId" [filter]="true" filterBy="foodItemName"
+                            [showClear]="farmerFoodItemsObj.foodItemId !== 0" placeholder="Select Food Item"
+                            [editable]="true"  [style]="{'width':'100%'}">
+                          </p-dropdown>
+                        </div>
+                        <div class="col-md-2 col-12">
+                          <div class="btn-Add">
+                            <button pButton pRipple type="button" icon="pi pi-plus" id="custom-small-button"
+                              class="p-button-rounded p-button-success me-2" (click)="addFoodItemData()"></button>
+                            <button pButton pRipple type="button" icon="pi pi-times" id="custom-small-button"
+                              class="p-button-rounded p-button-danger" (click)="onRemoveFoodItemData()"></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mt-3" *ngIf="isTableVisible">
+                        <p-table [value]="farmFoodItemArr" styleClass="p-datatable-gridlines p-datatable-sm mb-1"
+                          [responsive]="true">
+                          <ng-template pTemplate="header">
+                            <tr>
+                              <th style="width: 20%;">Sr</th>
+                              <th style="width: 80%;" pSortableColumn="foodItemName">Food Item Name <p-sortIcon
+                                  field="isActive"></p-sortIcon></th>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-item let-sr="rowIndex">
+                            <tr>
+                              <td>{{sr+1}}</td>
+                              <td>{{item.foodItemName}}</td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="card">
+                        <div class="card-body" id="listCardBody">
+                          <ul class="list-group">
+                            <li class="list-group-item bg-body-tertiary">
+                              <p-checkbox [(ngModel)]="farmerObj.isDryLandFarming" label="Dry Land Farm" [binary]="true"
+                                inputId="binary"></p-checkbox>
+                            </li>
+                            <li class="list-group-item bg-body-tertiary">
+                              <p-checkbox [(ngModel)]="farmerObj.isFalbagAvailable" label="Falbag Available"
+                                [binary]="true" inputId="binary"></p-checkbox>
+                            </li>
+                            <li class="list-group-item bg-body-tertiary">
+                              <p-checkbox [(ngModel)]="farmerObj.isWellAvailable" label="Well Available" [binary]="true"
+                                inputId="binary"></p-checkbox>
+                            </li>
+                            <li class="list-group-item bg-body-tertiary">
+                              <p-checkbox [(ngModel)]="farmerObj.isOrganicFarming" label="Organic Farming"
+                                [binary]="true" inputId="binary"></p-checkbox>
+                            </li>
+                            <li class="list-group-item bg-body-tertiary">
+                              <p-checkbox [(ngModel)]="farmerObj.isFarmHouse" label="Farm House" [binary]="true"
+                                inputId="binary"></p-checkbox>
+                            </li>
+                            <li class="list-group-item bg-body-tertiary">
+                              <p-checkbox [(ngModel)]="farmerObj.isTourAvailable" label="Tour Available" [binary]="true"
+                                inputId="binary"></p-checkbox>
+                            </li>
+                            <li class="list-group-item bg-body-tertiary">
+                              <p-checkbox [(ngModel)]="farmerObj.isRoadAvailable" label="Road Available" [binary]="true"
+                                inputId="binary"></p-checkbox>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-4">
+                    <div class="col-md-12 text-center">
+                      <button pButton pRipple class="p-button-success p-button-sm me-2" label="Save"
+                        (click)="addNewFarmer()" *ngIf="farmerObj.farmerId == 0 && loggedUserData.role == 'admin'">
+                        <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+                      </button>
+                      <button pButton pRipple class="p-button-warning p-button-sm me-2" label="Update"
+                        (click)="onUpdateFarmer()" *ngIf="farmerObj.farmerId !== 0 && loggedUserData.role == 'admin' || loggedUserData.role == 'Farmer'">
+                      </button>
+                      <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-sm" label="Cancel" [ngClass]="loggedUserData.role == 'Farmer'?'d-none':''"
+                        (click)="onCancel()"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

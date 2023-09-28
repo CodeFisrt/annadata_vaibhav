@@ -1,0 +1,128 @@
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <div class="row">
+            <div class="col-md-7 col-7 col-sm-7">
+              <h5><i class="fa fa-list mt-1" aria-hidden="true"></i>&nbsp;Customer</h5>
+            </div>
+            <div class="col-md-5 col-5 col-sm-5">
+              <button pButton pRipple class="p-button-success p-button-sm float-end"
+                (click)="onAddCustomer()">Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="col-md-12">
+            <p-table [value]="filteredCustomerArr" [paginator]="true" [rows]="10"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50,75,100,150]"
+              styleClass="p-datatable-gridlines p-datatable-sm" [responsive]="true"
+              [globalFilterFields]="['name', 'mobileNo', 'talukaName', 'cityName', 'districtName', 'altMobNo']">
+              <ng-template pTemplate="header">
+                <tr class="button-cell">
+                  <th>Sr</th>
+                  <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                  <th pSortableColumn="mobileNo">Contact <p-sortIcon field="mobileNo"></p-sortIcon></th>
+                  <th pSortableColumn="altMobNo">Alternate Contact <p-sortIcon field="altMobNo"></p-sortIcon></th>
+                  <th pSortableColumn="districtName">District <p-sortIcon field="districtName"></p-sortIcon></th>
+                  <th pSortableColumn="talukaName">Taluka <p-sortIcon field="talukaName"></p-sortIcon></th>
+                  <th pSortableColumn="cityName">City <p-sortIcon field="cityName"></p-sortIcon></th>
+                  <th>Action</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-item let-sr="rowIndex">
+                <tr class="button-cell">
+                  <td>{{sr+1}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.mobileNo}}</td>
+                  <td>{{item.altMobNo}}</td>
+                  <td>{{item.districtName}}</td>
+                  <td>{{item.talukaName}}</td>
+                  <td>{{item.cityName}}</td>
+                  <td>
+                    <i class="pi pi-pencil text-primary hand me-2" style="font-size: 1.2rem" (click)="onEdit(item)"></i>
+                    <i class="pi pi-trash text-danger hand" style="font-size: 1.2rem" (click)="onDelete(item)"></i>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="8" class="text-center">No Record Found</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal starts -->
+  <div class="row">
+    <div class="col-md-12">
+      <form #customerForm="ngForm">
+        <p-dialog header="Add Customer" [(visible)]="displayModalCustomer" [modal]="true" [style]="{width: '50vw'}"
+          [breakpoints]="{'960px': '75vw', '640px': '95vw'}" [baseZIndex]="10000" [draggable]="false"
+          [resizable]="false">
+          <div class="row">
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Name</label>
+              <input type="text" id="float-input" class="form-control" name="name" [(ngModel)]="customerObj.name"
+                required pInputText placeholder="Enter Name">
+            </div>
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Email</label>
+              <input type="text" id="float-input" class="form-control" name="emailId" [(ngModel)]="customerObj.emailId"
+                required pInputText placeholder="Enter Email">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Contact Number</label>
+              <input type="text" id="float-input" class="form-control" name="mobileNo"
+                [(ngModel)]="customerObj.mobileNo" required pInputText placeholder="Enter Contact Number">
+            </div>
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Alternate Contact Number</label>
+              <input type="text" id="float-input" class="form-control" name="altMobNo"
+                [(ngModel)]="customerObj.altMobNo" required pInputText placeholder="Enter Alternate Contact Number">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Aadhar Number</label>
+              <input type="text" id="float-input" class="form-control" name="aadharCardNo"
+                [(ngModel)]="customerObj.aadharCardNo" required pInputText placeholder="Enter Aadhar Number">
+            </div>
+            <div class="col-md-6">
+              <label class="fw-bold mb-1">Taluka</label>
+              <p-dropdown name="taluka" [options]="talukaArr" [(ngModel)]="customerObj.talukaId"
+                optionLabel="talukaName" optionValue="talukaId" [filter]="true" filterBy="talukaName"
+                [showClear]="customerObj.talukaId !== 0" placeholder="Select Taluka" [editable]="true"
+                [style]="{'width':'100%'}" [appendTo]="'body'">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <ng-template pTemplate="footer">
+            <button pButton pRipple class="p-button-success p-button-sm" label="Save" (click)="onSaveCustomer()"
+              *ngIf="customerObj.customerId == 0" [disabled]="customerForm.invalid">
+              <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+            </button>
+            <button pButton pRipple class="p-button-warning p-button-sm" label="Update" (click)="onUpdateCustomer()"
+              *ngIf="customerObj.customerId !== 0">
+              <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+            </button>
+            <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-sm" label="Cancel"
+              (click)="onCancel()"></button>
+          </ng-template>
+        </p-dialog>
+      </form>
+    </div>
+  </div>
+  <!-- modal ends -->
+</div>

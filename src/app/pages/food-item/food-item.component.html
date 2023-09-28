@@ -1,0 +1,161 @@
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <div class="row">
+            <div class="col-md-7 col-7 col-sm-7">
+              <h5>Food Item</h5>
+            </div>
+            <div class="col-md-5 col-5 col-sm-5">
+              <button pButton pRipple class="p-button-success p-button-sm float-end"
+                (click)="onAddFoodCategory()">Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="col-md-12">
+            <p-table [value]="filteredFoodItemArr" [paginator]="true" [rows]="10"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50,75,100,150]"
+              styleClass="p-datatable-gridlines p-datatable-sm" [responsive]="true"
+              [globalFilterFields]="['foodItemName', 'packagingType', 'shelfLifePeriod', 'foodCategoryName']">
+              <ng-template pTemplate="header">
+                <tr class="button-cell">
+                  <th style="width: 5%;">Sr</th>
+                  <th style="width: 15%;" pSortableColumn="foodItemName">Name<p-sortIcon
+                      field="foodItemName"></p-sortIcon></th>
+                  <th style="width: 15%;" pSortableColumn="packagingType">Packaging Type<p-sortIcon
+                      field="packagingType"></p-sortIcon></th>
+                  <th style="width: 15%;" pSortableColumn="shelfLifePeriod">Shelf Life Period <p-sortIcon
+                      field="shelfLifePeriod"></p-sortIcon></th>
+                  <th style="width: 20%;" pSortableColumn="foodCategoryName">Category<p-sortIcon
+                      field="foodCategoryName"></p-sortIcon></th>
+                  <th style="width: 15%;">Image</th>
+                  <th style="width: 20%;">Action</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-item let-sr="rowIndex">
+                <tr class="button-cell">
+                  <td>{{sr+1}}</td>
+                  <td>
+                    {{item.foodItemName}}
+                  </td>
+                  <td>
+                    {{item.packagingType}}
+                  </td>
+                  <td>
+                    {{item.shelfLifePeriod}}
+                  </td>
+                  <td>
+                    {{item.foodCategoryName}}
+                  </td>
+                  <td style="width: 60px;" (click)="showImagePopup(fileUrl + item.imageUrl)">
+                    <img class="imgClassTable hand" [src]="fileUrl + item.imageUrl">
+                  </td>
+                  <td>
+                    <i class="pi pi-pencil text-primary hand me-2" style="font-size: 1.2rem" (click)="onEdit(item)"></i>
+                    <i class="pi pi-trash text-danger hand" style="font-size: 1.2rem" (click)="onDelete(item)"></i>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="7" class="text-center">No Record Found</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal starts -->
+  <div class="row">
+    <div class="col-md-12">
+      <form #foodItemForm="ngForm">
+        <p-dialog header="Add Food Item" [(visible)]="displayModalFoodItem" [modal]="true" [style]="{width: '50vw'}"
+          [breakpoints]="{'960px': '75vw', '640px': '95vw'}" [baseZIndex]="10000" [draggable]="false"
+          [resizable]="false">
+          <div class="row">
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Food Item</label>
+              <input type="text" id="float-input" class="form-control" name="taluka"
+                [(ngModel)]="foodItemObj.foodItemName" required pInputText placeholder="Enter Food Item">
+            </div>
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Food Category</label>
+              <p-dropdown id="float-input" name="foodCategoryName" [options]="foodCategoryArr"
+                [(ngModel)]="foodItemObj.foodCategoryId" optionLabel="foodCategoryName" optionValue="foodCategoryId"
+                [filter]="true" filterBy="foodCategoryName" [showClear]="foodItemObj.foodCategoryId !== 0"
+                placeholder="Select Food Category" [editable]="true" [style]="{'width':'100%'}" [appendTo]="'body'">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Packaging Type</label>
+              <input type="text" id="float-input" class="form-control" name="packagingType"
+                [(ngModel)]="foodItemObj.packagingType" required pInputText placeholder="Enter Packaging Type">
+            </div>
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Shelf Life Period</label>
+              <input type="text" id="float-input" class="form-control" name="shelfLifePeriod"
+                [(ngModel)]="foodItemObj.shelfLifePeriod" required pInputText placeholder="Enter Shelf Life Period">
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Is Seasonal</label>
+              <div>
+                <p-inputSwitch styleClass="custom-switch" name="isActive"
+                  [(ngModel)]="foodItemObj.isActive"></p-inputSwitch>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Shelf Life Period</label>
+              <div>
+                <p-inputSwitch styleClass="custom-switch" name="isSeasonal"
+                  [(ngModel)]="foodItemObj.isSeasonal"></p-inputSwitch>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-md-7">
+              <label class="fw-bold my-1">Upload Image</label>
+              <input type="file" class="form-control" name="image" [(ngModel)]="foodItemObj.imageUrl" required
+                [value]="foodItemObj.imageUrl" (change)="uploadImage($event)" multiple>
+            </div>
+            <div class="col-md-5">
+              <img class="imgClass" [src]="fileUrl + foodItemObj.imageUrl" *ngIf="foodItemObj.imageUrl !== ''">
+            </div>
+          </div>
+
+          <ng-template pTemplate="footer">
+            <button pButton pRipple class="p-button-success p-button-sm" label="Save" (click)="onSaveFoodItem()"
+              *ngIf="foodItemObj.foodItemId == 0" [disabled]="foodItemForm.invalid">
+              <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+            </button>
+            <button pButton pRipple class="p-button-warning p-button-sm" label="Update" (click)="onUpdateFoodItem()"
+              *ngIf="foodItemObj.foodItemId !== 0">
+              <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+            </button>
+            <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-sm" label="Cancel"
+              (click)="onCancel()"></button>
+          </ng-template>
+        </p-dialog>
+      </form>
+    </div>
+  </div>
+  <!-- modal ends -->
+</div>
+
+<p-dialog header="Image Preview" [(visible)]="displayImagePopup" [modal]="true" [style]="{width: '50vw'}"
+  [baseZIndex]="10000" [breakpoints]="{'960px': '75vw', '640px': '95vw'}" [draggable]="false" [resizable]="false"
+  (onHide)="closeImagePopup()">
+  <img [src]="selectedImageUrl" alt="Image" class="popup-image">
+</p-dialog>

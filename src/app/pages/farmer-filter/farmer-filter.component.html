@@ -1,0 +1,183 @@
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <div class="row">
+            <div class="col-md-12 col-12 col-sm-12">
+              <h5><i class="fa fa-filter mt-1" aria-hidden="true"></i>&nbsp;Filter Farmer Data</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-12" *ngIf="showBlock">
+                      <div class="card">
+                        <div class="card-body" style="background: rgb(244, 241, 241);">
+                          <div class="row">
+                            <div class="col-md-2">
+                              <label class="fw-bold mb-1">Full Name</label>
+                              <input type="text" id="float-input" class="form-control" name="fullName"
+                                [(ngModel)]="filterFarmerObj.fullName" pInputText placeholder="Enter Full Name">
+                            </div>
+                            <div class="col-md-2">
+                              <label class="fw-bold mb-1">Aadhar Number</label>
+                              <input type="text" id="float-input" class="form-control" name="aadharCardNo"
+                                [(ngModel)]="filterFarmerObj.aadharCardNo" pInputText placeholder="Enter Aadhar Number">
+                            </div>
+                            <div class="col-md-2">
+                              <label class="fw-bold mb-1">Contact Number</label>
+                              <input type="text" id="float-input" class="form-control" name="contactNo"
+                                [(ngModel)]="filterFarmerObj.contactNo" pInputText placeholder="Enter Contact Number">
+                            </div>
+                            <div class="col-md-2">
+                              <label class="fw-bold mb-1">District</label>
+                              <p-dropdown name="districtName" [options]="districtArr" [(ngModel)]="selectedDistrictId"
+                                (onChange)="getAllCitiesByDistrictId()" optionLabel="districtName"
+                                optionValue="districtId" [filter]="true" filterBy="districtName" [showClear]="true"
+                                placeholder="Select District" [editable]="true" [style]="{'width':'100%'}"
+                                [appendTo]="'body'">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-2">
+                              <label class="fw-bold mb-1">City</label>
+                              <p-dropdown name="cityName" [options]="cityArr" [(ngModel)]="selectedCityId"
+                                (onChange)="getAllTalukaByCityId()" optionLabel="cityName" optionValue="cityId"
+                                [filter]="true" filterBy="cityName" [showClear]="true" placeholder="Select City"
+                                [editable]="true" [style]="{'width':'100%'}" [appendTo]="'body'">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-2">
+                              <label class="fw-bold mb-1">Taluka</label>
+                              <p-dropdown name="talukaName" [options]="talukaArr" [(ngModel)]="filterFarmerObj.talukaId"
+                                optionLabel="talukaName" optionValue="talukaId" [filter]="true" filterBy="talukaName"
+                                [showClear]="filterFarmerObj.talukaId !== 0" placeholder="Select Taluka"
+                                [editable]="true" [style]="{'width':'100%'}" [appendTo]="'body'">
+                              </p-dropdown>
+                            </div>
+                          </div>
+                          <div class="row mt-2">
+                            <div class="col-md-2 col-6">
+                              <label class="fw-bold mb-1" id="label-md">Is Dry Land Farming</label>
+                              <label class="fw-bold mb-1" id="label-sm">Dry Land Farming</label>
+                              <div>
+                                <p-inputSwitch styleClass="custom-switch" name="isDryLandFarming"
+                                  [(ngModel)]="filterFarmerObj.isDryLandFarming"></p-inputSwitch>
+                              </div>
+                            </div>
+                            <div class="col-md-2 col-6">
+                              <label class="fw-bold mb-1" id="label-md">Is Falbag Available</label>
+                              <label class="fw-bold mb-1" id="label-sm">Falbag Available</label>
+                              <div>
+                                <p-inputSwitch styleClass="custom-switch" name="isFalbagAvailable"
+                                  [(ngModel)]="filterFarmerObj.isFalbagAvailable"></p-inputSwitch>
+                              </div>
+                            </div>
+                            <div class="col-md-2 col-6">
+                              <label class="fw-bold mb-1" id="label-md">Is Organic Farming</label>
+                              <label class="fw-bold mb-1" id="label-sm">Organic Farming</label>
+                              <div>
+                                <p-inputSwitch styleClass="custom-switch" name="isOrganicFarming"
+                                  [(ngModel)]="filterFarmerObj.isOrganicFarming"></p-inputSwitch>
+                              </div>
+                            </div>
+                            <div class="col-md-2 col-6">
+                              <label class="fw-bold mb-1" id="label-md">Is Farm House</label>
+                              <label class="fw-bold mb-1" id="label-sm">Farm House</label>
+                              <div>
+                                <p-inputSwitch styleClass="custom-switch" name="isFarmHouse"
+                                  [(ngModel)]="filterFarmerObj.isFarmHouse"></p-inputSwitch>
+                              </div>
+                            </div>
+                            <div class="col-md-2 col-6">
+                              <label class="fw-bold mb-1" id="label-md">Is Tour Available</label>
+                              <label class="fw-bold mb-1" id="label-sm">Tour Available</label>
+                              <div>
+                                <p-inputSwitch styleClass="custom-switch" name="isTourAvailable"
+                                  [(ngModel)]="filterFarmerObj.isTourAvailable"></p-inputSwitch>
+                              </div>
+                            </div>
+                            <div class="col-md-2 col-6">
+                              <label class="fw-bold mb-1">Filter</label>
+                              <div>
+                                <button pButton pRipple type="button" icon="pi pi-filter" id="custom-small-button"
+                                  class="p-button-rounded p-button-success me-2" (click)="filterByFarmer()"></button>
+                                <button pButton pRipple type="button" icon="pi pi-times" id="custom-small-button"
+                                  class="p-button-rounded p-button-danger" (click)="onResetFilterByFarmer()"></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col-md-12">
+                        <p-table [value]="farmerArr" [paginator]="true" [rows]="10"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50,75,100,150]"
+                          styleClass="p-datatable-gridlines p-datatable-sm" [responsive]="true">
+                          <ng-template pTemplate="header">
+                            <tr class="button-cell">
+                              <th>Sr</th>
+                              <th pSortableColumn="fullName">Full Name <p-sortIcon field="fullName"></p-sortIcon></th>
+                              <th pSortableColumn="aadharCardNo">Aadhar <p-sortIcon field="aadharCardNo"></p-sortIcon>
+                              </th>
+                              <th pSortableColumn="isDryLandFarming">Dry Land Farming <p-sortIcon
+                                  field="isDryLandFarming"></p-sortIcon></th>
+                              <th pSortableColumn="isFalbagAvailable">Falbag Available <p-sortIcon
+                                  field="isFalbagAvailable"></p-sortIcon></th>
+                              <!-- <th pSortableColumn="isWellAvailable">Well Available <p-sortIcon
+                                  field="isWellAvailable"></p-sortIcon></th> -->
+                              <th pSortableColumn="isOrganicFarming">Organic Farming <p-sortIcon
+                                  field="isOrganicFarming"></p-sortIcon></th>
+                              <!-- <th pSortableColumn="isFarmHouse">Farm House <p-sortIcon field="isFarmHouse"></p-sortIcon>
+                              </th> -->
+                              <!-- <th pSortableColumn="isTourAvailable">Tour Available <p-sortIcon
+                                  field="isTourAvailable"></p-sortIcon></th>
+                              <th pSortableColumn="isRoadAvailable">Road Available <p-sortIcon
+                                  field="isRoadAvailable"></p-sortIcon></th> -->
+                              <th pSortableColumn="contactNo">Contact <p-sortIcon field="contactNo"></p-sortIcon></th>
+                              <th>Action</th>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-item let-sr="rowIndex">
+                            <tr class="button-cell">
+                              <td>{{sr+1}}</td>
+                              <td>{{item.fullName}} </td>
+                              <td>{{item.aadharCardNo}}</td>
+                              <td>{{item.isDryLandFarming?'Yes':'No'}}</td>
+                              <td>{{item.isFalbagAvailable?'Yes':'No'}}</td>
+                              <!-- <td>{{item.isWellAvailable?'Yes':'No'}}</td> -->
+                              <td>{{item.isOrganicFarming?'Yes':'No'}}</td>
+                              <!-- <td>{{item.isFarmHouse?'Yes':'No'}}</td> -->
+                              <!-- <td>{{item.isTourAvailable?'Yes':'No'}}</td> -->
+                              <!-- <td>{{item.isRoadAvailable?'Yes':'No'}}</td> -->
+                              <td>{{item.contactNo}}</td>
+                              <td>
+                                <i class="pi pi-pencil text-primary hand me-2" style="font-size: 1.2rem" (click)="onEdit(item.farmerId)"></i>
+                                <i class="pi pi-trash text-danger hand" style="font-size: 1.2rem" (click)="onDelete(item.farmerId)"></i>
+                              </td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td colspan="8" class="text-center">No Record Found</td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

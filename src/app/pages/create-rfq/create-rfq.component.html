@@ -1,0 +1,211 @@
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12" >
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <div class="row">
+            <div class="col-md-12 col-12 col-sm-12">
+              <h5><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;Create RFQ</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body" style="background: rgb(244, 241, 241);">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="card-body">
+                          <form  #frm> 
+                          <div class="row">
+                            <div class="col-md-4">
+                              <label class="fw-bold mb-1">Rfq Name</label>
+                              <input type="text" [disabled]="(loggedUserData.role !== 'Farmer')" id="float-input" class="form-control" name="rfqName"
+                                [(ngModel)]="rfqObj.rfqName" pInputText placeholder="Enter Rfq Name">
+                            </div>
+                            <div class="col-md-4">
+                              <label class="fw-bold mb-1">Quantity</label>
+                              <input type="text" [disabled]="(loggedUserData.role !== 'Farmer')" id="float-input" class="form-control" name="quantity"
+                                [(ngModel)]="rfqObj.quantity" pInputText placeholder="Enter Quantity">
+                            </div>
+                            <div class="col-md-4">
+                              <label class="fw-bold mb-1">Proposed Rate</label>
+                              <input type="text"[disabled]="(loggedUserData.role !== 'Farmer')" class="form-control" name="proposedRate"
+                                [(ngModel)]="rfqObj.proposedRate" pInputText placeholder="Enter Proposed Rate">
+                            </div>
+
+                          </div>
+                          <div class="row mt-3">
+                            <div class="col-md-4">
+                              <label class="fw-bold mb-1">Farmer Name</label>
+                              <p-dropdown [options]="farmerArr"  [disabled]="(loggedUserData.role !== 'Farmer')" [(ngModel)]="rfqObj.farmerId" optionLabel="fullName"
+                                optionValue="farmerId" [filter]="true" filterBy="fullName"
+                                [showClear]="rfqObj.farmerId !== 0" placeholder="Select Farmer" [editable]="true"
+                                [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="fw-bold mb-1">Food Category</label>
+                              <p-dropdown [disabled]="(loggedUserData.role !== 'Farmer')" [options]="foodCategoryArr" [(ngModel)]="selectedFoodCategory"
+                                optionLabel="foodCategoryName" optionValue="foodCategoryId" [filter]="true"
+                                filterBy="foodCategoryName" [showClear]="true" placeholder="Select Category"
+                                (onChange)="getAllFoodItemsByCategoryId()" [editable]="true" [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="fw-bold mb-1">Food Item</label>
+                              <p-dropdown [disabled]="(loggedUserData.role !== 'Farmer')" [options]="foodItemArr" [(ngModel)]="rfqObj.foodItemId"
+                                optionLabel="foodItemName" optionValue="foodItemId" [filter]="true"
+                                filterBy="foodItemName" [showClear]="rfqObj.foodItemId !== 0"
+                                placeholder="Select Food Item" [editable]="true" [style]="{'width':'100%'}">
+                              </p-dropdown>
+                            </div>
+                          </div>
+                          <div class="row mt-2">
+                            <div class="col-md-5">
+                              <label class="fw-bold mb-1">Extra Details</label>
+                              <textarea [disabled]="(loggedUserData.role !== 'Farmer')" class="form-control" pInputTextarea [autoResize]="true"
+                                [(ngModel)]="rfqObj.extraDetails" name="extraDetails"
+                                placeholder="Enter Extra Details"></textarea>
+                            </div>
+                            <div class="col-md-7">
+                              <div class="row my-2">
+                                <div class="col-md-9">
+                                  <label class="fw-bold my-1">Upload Image</label>
+                                  <input type="file" class="form-control" name="image" [(ngModel)]="rfqObj.photosUrls"
+                                    required [value]="rfqObj.photosUrls" (change)="uploadImage($event)" multiple>
+                                </div>
+                                <div class="col-md-3">
+                                  <img class="imgClass hand" [src]="fileUrl + rfqObj.photosUrls"
+                                    *ngIf="rfqObj.photosUrls !== ''"
+                                    (click)="showImagePopup(fileUrl + rfqObj.photosUrls)">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row mt-4">
+                            <div class="col-md-12 text-center">
+                              <button pButton pRipple class="p-button-success p-button-sm me-2" label="Save"
+                                (click)="createRfq()" *ngIf="rfqObj.quotationId == 0">
+                                <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+                              </button>
+                              <button pButton pRipple class="p-button-warning p-button-sm me-2" label="Update"
+                                (click)="onUpdateRfq()" *ngIf="rfqObj.quotationId !== 0">
+                              </button>
+                              <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-sm me-2"
+                                label="Cancel" (click)="onCancel()"></button>
+                              <button pButton pRipple icon="fa fa-gavel" class="p-button-primary p-button-sm"
+                                label="Add Bid" (click)="onOpenBid()"
+                                *ngIf="loggedUserData.role == 'Vendor' && rfqObj.quotationId !== 0"></button>
+                            </div>
+                          </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+  <hr>
+  <div class="row" *ngIf="rfqObj.quotationId !== 0">
+    <div class="col-md-12" >
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <div class="row">
+            <div class="col-md-12 col-12 col-sm-12">
+              <h5><i class="fa fa-gavel" aria-hidden="true"></i>&nbsp;Bids</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <p-table [value]="bidsByQuotationArr" [paginator]="false" [rows]="10"
+               
+              [showCurrentPageReport]="false"  
+              styleClass="p-datatable-gridlines p-datatable-sm" [responsive]="true"
+              [globalFilterFields]="['stateName']">
+              <ng-template pTemplate="header">
+                <tr class="button-cell">
+                  <th style="width: 10%;">Sr</th>
+                  <th style="width: 45%;" pSortableColumn="naration">Vendor   <p-sortIcon field="naration"></p-sortIcon></th>
+                  <th style="width: 45%;" pSortableColumn="naration">Contact No <p-sortIcon field="naration"></p-sortIcon></th>
+                  <th style="width: 45%;" pSortableColumn="naration">Naration <p-sortIcon field="naration"></p-sortIcon></th>
+                  <th style="width: 45%;" pSortableColumn="quotedRate">Quoted Rate <p-sortIcon field="quotedRate"></p-sortIcon></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-item let-sr="rowIndex">
+                <tr class="button-cell">
+                  <td>{{sr+1}}</td>
+                  <td>{{item.vendorName}}</td>
+                  <td>{{item.contactNo}}</td>
+                  <td>{{item.naration}}</td>
+                  <td>{{item.quotedRate}}</td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="5" class="text-center">No Bids Found</td>
+                </tr>
+              </ng-template>
+            </p-table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal starts -->
+  <div class="row">
+    <div class="col-md-12">
+      <form #bidForm="ngForm">
+        <p-dialog header="Add Bid" [(visible)]="displayModalBid" [modal]="true" [style]="{width: '50vw'}"
+          [breakpoints]="{'960px': '75vw', '640px': '95vw'}" [baseZIndex]="10000" [draggable]="false"
+          [resizable]="false">
+          <div class="row">
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Quoted Rate</label>
+              <input type="text" id="float-input" class="form-control" name="quotedRate" [(ngModel)]="bidObj.quotedRate"
+                required pInputText placeholder="Enter Quoted Rate">
+            </div>
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Naration</label>
+              <textarea class="form-control" pInputTextarea [autoResize]="true" [(ngModel)]="bidObj.naration"
+                name="naration" placeholder="Enter Naration"></textarea>
+            </div>
+          </div>
+          <ng-template pTemplate="footer">
+            <button pButton pRipple class="p-button-success p-button-sm" label="Save" (click)="onAddBid()"
+              *ngIf="bidObj.bidId == 0" [disabled]="bidForm.invalid">
+              <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+            </button>
+            <button pButton pRipple class="p-button-warning p-button-sm" label="Update" (click)="onUpdateBid()"
+              *ngIf="bidObj.bidId !== 0">
+              <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+            </button>
+            <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-sm" label="Cancel"
+              (click)="onCancelBid()"></button>
+          </ng-template>
+        </p-dialog>
+      </form>
+    </div>
+  </div>
+  <!-- modal ends -->
+</div>
+
+<p-dialog header="Image Preview" [(visible)]="displayImagePopup" [modal]="true" [style]="{width: '50vw'}"
+  [baseZIndex]="10000" [breakpoints]="{'960px': '75vw', '640px': '95vw'}" [draggable]="false" [resizable]="false"
+  (onHide)="closeImagePopup()">
+  <img [src]="selectedImageUrl" alt="Image" class="popup-image">
+</p-dialog>

@@ -1,0 +1,121 @@
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <div class="row">
+            <div class="col-md-7 col-7 col-sm-7">
+              <h5>Taluka</h5>
+            </div>
+            <div class="col-md-5 col-5 col-sm-5">
+              <button pButton pRipple class="p-button-success p-button-sm float-end"
+                (click)="onAddTaluka()">Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="col-md-12">
+            <p-table [value]="filteredTalukaArr" [paginator]="true" [rows]="10"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50,75,100,150]"
+              styleClass="p-datatable-gridlines p-datatable-sm" [responsive]="true"
+              [globalFilterFields]="['stateName','districtName', 'talukaName', 'cityName']">
+              <ng-template pTemplate="header">
+                <tr class="button-cell">
+                  <th style="width: 5%;">Sr</th>
+                  <th style="width: 19%;" pSortableColumn="stateName">State <p-sortIcon field="stateName"></p-sortIcon>
+                  </th>
+                  <th style="width: 19%;" pSortableColumn="districtName">District <p-sortIcon
+                      field="districtName"></p-sortIcon></th>
+                  <th style="width: 19%;" pSortableColumn="talukaName">Taluka <p-sortIcon
+                      field="talukaName"></p-sortIcon></th>
+                  <th style="width: 19%;" pSortableColumn="cityName">City <p-sortIcon field="cityName"></p-sortIcon>
+                  </th>
+                  <th>Action</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-item let-sr="rowIndex">
+                <tr class="button-cell">
+                  <td>{{sr+1}}</td>
+                  <td>{{item.stateName}}</td>
+                  <td>{{item.districtName}}</td>
+                  <td>{{item.talukaName}}</td>
+                  <td>{{item.cityName}}</td>
+                  <td>
+                    <button pButton pRipple class="p-button-primary p-button-sm"
+                      (click)="onEditTaluka(item)">Edit</button>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="6" class="text-center">No Record Found</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal starts -->
+  <div class="row">
+    <div class="col-md-12">
+      <form #talukaForm="ngForm">
+        <p-dialog header="Add Taluka" [(visible)]="displayModalTaluka" [modal]="true" [style]="{width: '50vw'}"
+          [breakpoints]="{'960px': '75vw', '640px': '95vw'}" [baseZIndex]="10000" [draggable]="false"
+          [resizable]="false">
+
+          <div class="row">
+            <div class="col-md-6">
+              <label class="fw-bold my-1">State</label>
+              <p-dropdown name="stateName" [options]="stateArr" [(ngModel)]="selectedStateId"
+                (onChange)="getDistrictByStateId()" optionLabel="stateName" optionValue="stateId" [filter]="true"
+                filterBy="stateName" [showClear]="true" placeholder="Select State" [editable]="true"
+                [style]="{'width':'100%'}" [appendTo]="'body'">
+              </p-dropdown>
+            </div>
+            <div class="col-md-6">
+              <label class="fw-bold my-1">District</label>
+              <p-dropdown name="districtName" [options]="districtArr" [(ngModel)]="selectedDistrictId"
+                (onChange)="getAllCitiesByDistrictId()" optionLabel="districtName" optionValue="districtId"
+                [filter]="true" filterBy="districtName" [showClear]="true" placeholder="Select District"
+                [editable]="true" [style]="{'width':'100%'}" [appendTo]="'body'">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <label class="fw-bold my-1">Taluka</label>
+              <input type="text" id="float-input" class="form-control" name="taluka" [(ngModel)]="talukaObj.talukaName"
+                required pInputText placeholder="Enter Taluka">
+            </div>
+            <div class="col-md-6">
+              <label class="fw-bold my-1">City</label>
+                <p-dropdown name="cityName" [options]="cityArr" [(ngModel)]="talukaObj.cityId" optionLabel="cityName"
+                  optionValue="cityId" [filter]="true" filterBy="cityName" [showClear]="talukaObj.cityId !== 0"
+                  placeholder="Select City" [editable]="true" [style]="{'width':'100%'}" [appendTo]="'body'">
+                </p-dropdown>
+            </div>
+          </div>
+
+          <ng-template pTemplate="footer">
+            <button pButton pRipple class="p-button-success p-button-sm" label="Save" (click)="saveTaluka()"
+              *ngIf="talukaObj.talukaId == 0" [disabled]="!talukaForm.valid">
+              <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+            </button>
+            <button pButton pRipple class="p-button-warning p-button-sm" label="Update" (click)="updateTaluka()"
+              *ngIf="talukaObj.talukaId !== 0">
+              <span *ngIf="isApiCallInProgress" class="spinner-border spinner-border-sm me-2"></span>
+            </button>
+            <button pButton pRipple icon="pi pi-times" class="p-button-danger p-button-sm" label="Cancel"
+              (click)="cancelTaluka()"></button>
+          </ng-template>
+        </p-dialog>
+      </form>
+    </div>
+  </div>
+  <!-- modal ends -->
+</div>

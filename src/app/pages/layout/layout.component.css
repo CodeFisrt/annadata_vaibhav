@@ -1,0 +1,76 @@
+
+.bg-black {
+  background-color: #000;
+}
+
+.activeLink{
+  color: orange;
+  font-weight: bold;
+}
+
+#logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+}
+
+#logo2 {
+  border-radius: 25%;
+  border: 2px solid rgb(246, 234, 234);
+  background-color: rgb(76, 64, 64);
+  color: rgb(81, 228, 81);
+  padding: 9px 10px 9px 10px;
+}
+
+.navbar-brand {
+  padding: 14px 20px;
+  font-size: 16px;
+  font-family: 'Rubik 80s Fade', cursive !important;
+}
+
+.navbar-nav {
+  width: 82%;
+}
+
+.nav-item {
+  padding: 0 5px;
+  text-align: center;
+}
+
+.nav-link {
+  padding-bottom: 10px;
+}
+
+#custom-small-button {
+  width: 26px !important;
+  height: 26px !important;
+  font-size: 14px !important;
+  margin: 8px 0px 0px 0px !important;
+}
+
+.v-line {
+  background-color: gray;
+  width: 1px;
+  height: 20px;
+}
+
+.navbar-collapse.collapse.in {
+  display: block !important;
+}
+
+.logOutBtn{
+  margin: -29px 0px 0px 0px;
+}
+
+@media (max-width: 576px) {
+  .nav-item {
+      width: 100%;
+      text-align: left;
+  }
+
+  .v-line {
+      display: none;
+  }
+}
+
+

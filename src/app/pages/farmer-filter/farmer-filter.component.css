@@ -1,0 +1,19 @@
+/* Default style for the labels */
+#label-md {
+  display: block;
+}
+
+#label-sm {
+  display: none;
+}
+
+/* Media query for smaller screens where col-6 is applied */
+@media (max-width: 768px) {
+  #label-md {
+      display: none;
+  }
+
+  #label-sm {
+      display: block;
+  }
+}

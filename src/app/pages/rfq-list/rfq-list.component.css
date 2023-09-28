@@ -1,0 +1,34 @@
+p{
+  margin-bottom: 6px;
+}
+
+/* .cardImg {
+  height: 150px;
+  object-fit: cover;
+} */
+
+.card-img-container {
+  position: relative;
+  text-align: center;
+}
+
+.cardImg {
+  height: 100px;
+  width: 100%;
+}
+
+.card-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  width: 100%;
+  color: #fff;
+  font-weight: bolder;
+}
+
+.popup-image {
+  width: 100%;
+  max-height: 60vh;
+}
